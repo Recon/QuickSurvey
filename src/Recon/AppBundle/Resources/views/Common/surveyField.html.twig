@@ -1,0 +1,11 @@
+{% if key in form.children|keys %}
+    {% set item = attribute(form.children, key) %}
+
+    {% if item.vars.block_prefixes.1 not in ['checkbox', 'choice'] %}
+        {{ form_label(item) }}
+    {% endif %}
+    {{ form_errors(item) }}
+    {{ form_widget(item) }}
+
+    <div class="clearfix"></div>
+{% endif %}

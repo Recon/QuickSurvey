@@ -1,0 +1,33 @@
+# Assetic Configuration
+assetic:
+    debug:          %kernel.debug%
+    use_controller: false
+    bundles:        [  ]
+    filters:
+        less:
+            bin:        /usr/bin/lessc
+            node:       /usr/bin/node
+            node_paths: [/usr/lib/node_modules/]
+            apply_to :  "\.less$"
+        uglifyjs2:
+            bin: /usr/bin/uglifyjs
+            #mangle: true
+            #apply_to: "\.js$"
+        uglifycss:
+            bin: /usr/bin/uglifycss
+            #apply_to: "\.css$"
+        cssrewrite: ~
+
+    assets:
+        js_global:
+            inputs:
+                - @ReconAppBundle/Resources/public/bower/jquery/dist/jquery.js
+                - @ReconAppBundle/Resources/public/bower/bootstrap/dist/js/bootstrap.js
+                - @ReconAppBundle/Resources/public/js/material.js
+                - @ReconAppBundle/Resources/public/js/ripples.js
+
+        css_global:
+            inputs:
+                - @ReconAppBundle/Resources/public/less/theme.less
+            filters:
+                - cssrewrite

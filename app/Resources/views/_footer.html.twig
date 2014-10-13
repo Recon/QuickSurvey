@@ -1,0 +1,21 @@
+<footer>
+    <div class="container">
+        <div class="row footer-widgets">
+
+        </div>
+
+        <div class="copyright-section">
+
+        </div>
+    </div>
+</footer>
+
+
+<script type="text/javascript">
+    var BASE_URL = "{{ app.request.baseurl }}";
+    var BOWER_PATH = "/bower";
+    var BOWER_URL = "{{ app.request.baseurl }}/bower";
+    var TOKEN = "{{ default_csrf_token() }}";
+    var IS_AUTHENTICATED = {{ is_granted('ROLE_USER') ? 'true' : 'false' }};
+</script>
+

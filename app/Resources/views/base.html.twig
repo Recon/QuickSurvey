@@ -1,0 +1,39 @@
+{% extends '::template.html.twig' %}
+
+{% block _content %}
+    <div id="content">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <br>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>
+                        {% block title %}
+                        {% endblock %}
+                    </h1>
+                    <hr>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 main-infobox-container">
+                    {% block infobox %}
+                    {% endblock %}
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Content area -->
+                <div class="col-md-12">
+                    {% block body %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

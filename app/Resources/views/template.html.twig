@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% block stylesheets %}
+            {% stylesheets '@css_global' output='packed/core.css' %}
+            <link rel="stylesheet" href="{{ asset_url }}">
+            {% endstylesheets %}
+        {% endblock %}
+
+        {% include '::_header.html.twig' %}
+
+        {% block _content %}
+        {% endblock %}
+
+    <div class="clearfix"></div>
+
+    {% include '::_footer.html.twig' %}
+
+    {% block javascripts %}
+        {% javascripts '@js_global' output='packed/core.js' %}
+        <script src="{{ asset_url }}" type="text/javascript"></script>
+        {% endjavascripts %}
+    {% endblock %}
+
+</body>
+</html>

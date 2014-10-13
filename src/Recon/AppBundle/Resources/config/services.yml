@@ -1,0 +1,22 @@
+services:
+    hipchat:
+        class: Recon\AppBundle\Lib\Hipchat\HipchatGateway
+        arguments: ["%hipchat_token%", "%hipchat_room%", "%hipchat_from%"]
+
+    recon.twig.auto_link_twig_extension:
+        class: Recon\AppBundle\Twig\AutoLinkTwigExtension
+        tags:
+            - { name: twig.extension }
+
+    recon.twig.friendly_time_ago:
+        class: Recon\AppBundle\Twig\TimeAgoTwigExtension
+        arguments: [@translator]
+        tags:
+            - { name: twig.extension }
+
+    recon.twig.csrf_twig_extension:
+        class: Recon\AppBundle\Twig\CsrfTwigExtension
+        arguments: ["@form.csrf_provider"]
+        tags:
+            - { name: twig.extension }
+

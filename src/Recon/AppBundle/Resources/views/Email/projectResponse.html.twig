@@ -1,0 +1,37 @@
+{% extends '::Email/base.html.twig' %}
+
+
+{% block title %}
+    {{ project.name }} Responses</h2>
+{% endblock %}
+
+{% block content %}
+    <h2><strong><em>{{ project.name }}</em></strong> Responses</h2>
+
+    <p>Dude, the responses for {{ project.name }} have been submitted.</p>
+
+    <hr>
+
+    <table cellpadding="0" cellspacing="10">
+        <tbody>
+            {% for question in project.questions %}
+                <tr>
+                    <th valign="top" style="text-align: right;"><strong>{{ question.text }}</strong></th>
+                    <td width="40%" valign="top" style="text-align: left;">
+                        {% for response in project.responses %}
+                            {% if response.answer.question.id == question.id %}
+                                <div>
+                                    {% if response.value %}
+                                        {{ response.value }}
+                                    {% else %}
+                                        <em>{{ response.answer.text }}</em>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

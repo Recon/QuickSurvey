@@ -1,0 +1,122 @@
+{% extends "::base.html.twig" %}
+{% form_theme form _self %}
+
+{% block title %}Project Requirements Survey <br> <em><strong>{{project.name}}</strong></em>{% endblock %}
+
+{% block choice_widget_expanded %}
+    {% spaceless %}
+        <div {{ block('widget_container_attributes') }}>
+            {% for child in form %}
+
+                <div class="radio radio-primary">
+                    <label class="{{ (multiple ? 'checkbox' : 'radio') ~ (inline is defined and inline ? ' inline' : '') }}">
+                        {{ form_widget(child, {'attr': {'class': attr.widget_class|default('')}}) }}
+                        {{ child.vars.label|trans({}, translation_domain) }}
+                    </label>
+                </div>
+
+            {% endfor %}
+        </div>
+    {% endspaceless %}
+{% endblock choice_widget_expanded %}
+
+
+{% block infobox %}
+    <div class="well infobox">
+        Please take a moment to answer this short survey regarding your project requirements. This survey will help me gain a better insight over your needs and
+        it will allow me to plan ahead the appropriate approach which will lead to the results you'd expect.
+    </div>
+{% endblock %}
+
+
+{% block body %}
+    <div class="containerx">
+
+        {#    {{ dump(form) }}#}
+
+        <div class="row">
+            <div class="col-md-12">
+
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                {{ form_errors(form) }}
+
+                {% for question  in project.questions %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="well bs-component">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h2>{{ question.text }}</h2>
+                                        <hr>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="{% if question.description %}col-md-9{% else %}col-md-12{% endif %}">
+                                        <div>
+                                            {# Radios bounded to the question itself #}
+                                            {% include 'ReconAppBundle:Common:surveyField.html.twig' with {
+                                                    'key' : "question:" ~ question.id,
+                                                    'form' :form } only %}
+
+                                            {# The other normal fields #}
+                                            {% for answer in question.answers %}
+                                                {% include 'ReconAppBundle:Common:surveyField.html.twig' with {
+                                                    'key' : "question:" ~ question.id ~ ":" ~ answer.id,
+                                                    'form' :form } only %}
+                                            {% endfor %}
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    {% if question.description %}
+                                        <div class="col-md-3">
+                                            <div class="panel panel-info">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title"> <i class="fa fa-info-circle"></i> Info</h3>
+                                                </div>
+                                                <div class="panel-body">
+                                                    {{ question.description | nl2br }}
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    {% endif %}
+
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="bs-component">
+                                <div class="alert alert-warning">
+                                    <h4>Something's wrong...</h4>
+                                    <p>This survey has no questions.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        {{ form_widget(form.save) }}
+                        <br><br>
+                    </div>
+                </div>
+
+                {{ form_end(form) }}
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

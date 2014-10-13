@@ -1,0 +1,22 @@
+{% extends "::base.html.twig" %}
+
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="bs-component">
+                <div class="alert alert-info">
+
+                    <i class="icon icon-material-check-circle pull-left"></i>
+
+                    {% if title is defined  %}
+                        <strong>{{ title }}</strong>
+                    {% endif %}
+                    <div>{{ message }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

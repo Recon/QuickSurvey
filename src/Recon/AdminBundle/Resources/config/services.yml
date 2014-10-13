@@ -1,0 +1,20 @@
+services:
+    recon_admin.admin.project:
+        class: Recon\AdminBundle\Admin\ProjectAdmin
+        arguments: [~, Recon\ModelBundle\Entity\Project, ReconAdminBundle:ProjectAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Project}
+        calls:
+            - [ setTemplate, [show, ReconAdminBundle:Project:show.html.twig]]
+
+    recon_admin.admin.question:
+        class: Recon\AdminBundle\Admin\QuestionAdmin
+        arguments: [~, Recon\ModelBundle\Entity\Question, ReconAdminBundle:QuestionAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Question}
+
+    recon_admin.admin.answer:
+        class: Recon\AdminBundle\Admin\AnswerAdmin
+        arguments: [~, Recon\ModelBundle\Entity\Answer, ReconAdminBundle:AnswerAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Answer}

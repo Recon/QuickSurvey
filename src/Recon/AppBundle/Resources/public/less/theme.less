@@ -1,0 +1,44 @@
+@import "../bower/bootstrap/less/bootstrap.less";
+@import "ripples.less";
+@import "material.less";
+
+body{
+    font-family: "Open Sans", sans-serif;
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-smooth: always;
+}
+
+.radio{
+    >span{
+        position: relative;
+        top: 10px!important;
+    }
+}
+
+.form-control-wrapper{
+    min-width: 60%;
+    float: left;
+}
+
+.alert{
+    .icon{
+        font-size: 20px;
+        color: white;
+        margin-right: 10px;
+    }
+}
+
+form{
+    .help-block{
+        background: @btn-warning;
+        margin-top: 0;
+        padding: @grid-gutter-width/3 @grid-gutter-width/2;
+        color: white;
+
+        &:before{
+            content:"\f06a ";
+            font-family:'FontAwesome';
+        }
+    }
+}
