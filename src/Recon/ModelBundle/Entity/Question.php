@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping\OneToMany;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Recon\ModelBundle\Repository\QuestionRepository")
- */ 
+ */
 class Question
 {
 
@@ -75,7 +75,7 @@ class Question
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -98,7 +98,7 @@ class Question
     /**
      * Get text
      *
-     * @return string 
+     * @return string
      */
     public function getText()
     {
@@ -121,7 +121,7 @@ class Question
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -154,7 +154,7 @@ class Question
     /**
      * Get answers
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAnswers()
     {
@@ -187,10 +187,22 @@ class Question
     /**
      * Get projects
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getProjects()
     {
         return $this->projects;
     }
+
+    public function hasOnlyRadios()
+    {
+        foreach ($this->getAnswers() As $answer) {
+            if ($answer->getType() !== 'RADIO') {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 }

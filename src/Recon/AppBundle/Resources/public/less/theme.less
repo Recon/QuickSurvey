@@ -41,4 +41,19 @@ form{
             font-family:'FontAwesome';
         }
     }
+
+    .control-label{
+        .asterisk{
+            display: none;
+        }
+    }
+
+    .container-textarea,
+    .container-textinput{
+        label{
+            &:after{
+                content: ':';
+            }
+        }
+    }
 }

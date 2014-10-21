@@ -58,13 +58,15 @@
                                             {# Radios bounded to the question itself #}
                                             {% include 'ReconAppBundle:Common:surveyField.html.twig' with {
                                                     'key' : "question:" ~ question.id,
-                                                    'form' :form } only %}
+                                                    'form' :form,
+                                                    'type': 'RADIO' } only %}
 
                                             {# The other normal fields #}
                                             {% for answer in question.answers %}
                                                 {% include 'ReconAppBundle:Common:surveyField.html.twig' with {
                                                     'key' : "question:" ~ question.id ~ ":" ~ answer.id,
-                                                    'form' :form } only %}
+                                                    'form' :form,
+                                                    'type': answer.type } only %}
                                             {% endfor %}
                                         </div>
 

@@ -7,13 +7,14 @@ use Recon\ModelBundle\Entity\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ProjectController extends Controller
 {
@@ -34,7 +35,11 @@ class ProjectController extends Controller
         }
 
         $form = $this->getSurveyForm($project)->getForm();
-        $form->handleRequest($request);
+
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            $this->validate($form, $project);
+        }
 
         if ($form->isValid()) {
             $this->handleFormData($form, $project);
@@ -79,6 +84,39 @@ class ProjectController extends Controller
     }
 
     /**
+     * Custom validator which only checks for at least one answer for any given question
+     *
+     * @param Form $form
+     * @param Project $project
+     */
+    protected function validate(Form $form, $project)
+    {
+
+        $data = $form->getData();
+
+        foreach ($project->getQuestions() as $question) {
+
+            if (array_key_exists("question:{$question->getId()}", $data) && !empty($data["question:{$question->getId()}"])) {
+                continue;
+            }
+
+            foreach ($question->getAnswers() As $answer) {
+                if (array_key_exists("question:{$question->getId()}:{$answer->getId()}", $data) && !empty($data["question:{$question->getId()}:{$answer->getId()}"])) {
+                    continue 2;
+                }
+            }
+
+            try {
+                $errorTarget = $form->get("question:{$question->getId()}");
+            } catch (\Exception $ex) {
+                $errorTarget = $form->get("question:{$question->getId()}:{$question->getAnswers()->first()->getId()}");
+            }
+
+            $errorTarget->addError(new FormError("Please fill this field"));
+        }
+    }
+
+    /**
      * Creates the survey form for a given project
      *
      * @param Project $project
@@ -107,7 +145,8 @@ class ProjectController extends Controller
                         break;
                     case 'TEXTAREA':
                         $form->add($defaultName, 'textarea', [
-                            'label' => $answer->getText()
+                            'label' => $answer->getText(),
+                            'required' => 'false'
                         ]);
                         break;
                     case 'TEXTINPUT':
@@ -127,10 +166,7 @@ class ProjectController extends Controller
                 $form->add("question:{$answer->getQuestion()->getId()}", 'choice', [
                     'choices' => $radioItems,
                     'expanded' => true,
-                    'label' => ' ',
-                    'constraints' => [
-                        new NotBlank()
-                    ]
+                    'label' => ' '
                 ]);
             }
         }
@@ -177,13 +213,13 @@ class ProjectController extends Controller
             }
         }
 
-        $project->setIsCompleted(true);
+        //$project->setIsCompleted(true);
         $this->getDoctrine()->getManager()->flush();
     }
 
     public function submitNotificationEmail($project)
     {
-        $message = \Swift_Message::newInstance()
+        $message = Swift_Message::newInstance()
                 ->setSubject("Quick Survey Response: {$project->getName()}")
                 ->setFrom($this->container->getParameter('email_from'))
                 ->setTo($this->container->getParameter('email_admin'))
