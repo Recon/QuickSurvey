@@ -45,9 +45,6 @@ class ProjectController extends Controller
             $this->handleFormData($form, $project);
             $this->submitNotificationEmail($project);
 
-            // @todo later on
-            // $this->submitChatNotification($project);
-
             return $this->render('ReconAppBundle:Messages:success.html.twig', [
                         'message' => 'Thank you for your time! The answers were recorded and forwarded to the developer.'
             ]);
@@ -213,7 +210,7 @@ class ProjectController extends Controller
             }
         }
 
-        //$project->setIsCompleted(true);
+        $project->setIsCompleted(true);
         $this->getDoctrine()->getManager()->flush();
     }
 
