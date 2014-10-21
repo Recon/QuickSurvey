@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\OrderBy;
 
 /**
  * Project
@@ -73,6 +74,7 @@ class Project
     /**
      * @var Question
      * @ManyToMany(targetEntity="Question", inversedBy="projects", cascade={"persist"})
+     * @OrderBy({"position" = "ASC"})
      * @JoinTable(name="ProjectQuestions",
      *      joinColumns={@JoinColumn(name="project_id", referencedColumnName="id")},
      *      inverseJoinColumns={@JoinColumn(name="question_id", referencedColumnName="id")}
@@ -272,10 +274,10 @@ class Project
     /**
      * Add responses
      *
-     * @param \Recon\ModelBundle\Entity\Response $response
+     * @param Response $response
      * @return Project
      */
-    public function addResponse(\Recon\ModelBundle\Entity\Response $response)
+    public function addResponse(Response $response)
     {
         foreach ($this->responses As $existingResponse) {
             if ($existingResponse->getAnswer()->getId() == $response->getAnswer()->getId()) {
@@ -291,9 +293,9 @@ class Project
     /**
      * Remove responses
      *
-     * @param \Recon\ModelBundle\Entity\Response $responses
+     * @param Response $responses
      */
-    public function removeResponse(\Recon\ModelBundle\Entity\Response $responses)
+    public function removeResponse(Response $responses)
     {
         $this->responses->removeElement($responses);
     }
@@ -301,7 +303,7 @@ class Project
     /**
      * Get responses
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getResponses()
     {
@@ -325,7 +327,7 @@ class Project
     /**
      * Get isCompleted
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsCompleted()
     {

@@ -13,4 +13,13 @@ use Doctrine\ORM\EntityRepository;
 class QuestionRepository extends EntityRepository
 {
 
+    public function getMaxPosition()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder()
+        ->from('Recon\ModelBundle\Entity\Question', 'q')
+        ->select('MAX(q.position) AS max_position');
+
+        return $query->getQuery()->getSingleScalarResult();
+    }
+
 }

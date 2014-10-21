@@ -11,6 +11,23 @@ use Sonata\AdminBundle\Show\ShowMapper;
 class QuestionAdmin extends Admin
 {
 
+    public function configure()
+    {
+        parent::configure();
+
+        $this->datagridValues['_sort_order'] = 'ASC';
+        $this->datagridValues['_sort_by'] = 'position';
+    }
+
+    public function getNewInstance()
+    {
+        $instance = parent::getNewInstance();
+        $position = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(get_class($instance))->getMaxPosition() + 1;
+        $instance->setPosition($position);
+
+        return $instance;
+    }
+
     /**
      * @param DatagridMapper $datagridMapper
      */
@@ -18,6 +35,7 @@ class QuestionAdmin extends Admin
     {
         $datagridMapper
                 ->add('id')
+                ->add('position')
                 ->add('text')
                 ->add('description')
         ;
@@ -30,6 +48,7 @@ class QuestionAdmin extends Admin
     {
         $listMapper
                 ->add('id')
+                ->add('position')
                 ->add('text')
                 //->add('description')
                 ->add('_action', 'actions', array(
@@ -50,6 +69,7 @@ class QuestionAdmin extends Admin
         $formMapper
                 //->add('id')
                 ->add('text')
+                ->add('position')
                 ->add('description')
                 ->add('answers', 'sonata_type_collection', [
                     'by_reference' => false,
@@ -69,6 +89,7 @@ class QuestionAdmin extends Admin
     {
         $showMapper
                 ->add('id')
+                ->add('position')
                 ->add('text')
                 ->add('description')
         ;

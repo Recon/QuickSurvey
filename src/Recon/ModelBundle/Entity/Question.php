@@ -8,11 +8,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\OneToMany;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Question
  *
  * @ORM\Table()
+ * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="Recon\ModelBundle\Repository\QuestionRepository")
  */
 class Question
@@ -54,6 +56,11 @@ class Question
      * @ManyToMany(targetEntity="Project", mappedBy="questions", cascade={"persist"})
      */
     private $projects;
+
+    /**
+     * @ORM\Column(name="position", type="integer", unique=true)
+     */
+    private $position;
 
     /**
      * @return string
@@ -192,6 +199,16 @@ class Question
     public function getProjects()
     {
         return $this->projects;
+    }
+
+    public function setPosition($position)
+    {
+        $this->position = $position;
+    }
+
+    public function getPosition()
+    {
+        return $this->position;
     }
 
     public function hasOnlyRadios()
