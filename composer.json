@@ -36,6 +36,7 @@
         "hipchat/hipchat-php": "dev-master"
     },
     "require-dev": {
+        "sebastian/comparator": "1.1.*@dev",
         "sensio/generator-bundle": "~2.3",
         "phpunit/php-code-coverage": "3.0.*@dev",
         "phpunit/phpunit-mock-objects": "2.*@dev",
